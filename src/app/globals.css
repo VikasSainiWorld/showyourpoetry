@@ -2,22 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap');
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-midnight: #0a0812;
+  --bg-deep-purple: #1a0a2e;
+  --border-royal: #3d1a6e;
+  --accent-gold: #d4a017;
+  --accent-violet: #7c3aed;
+  --text-parchment: #f5efe6;
+  --text-muted: #8b8ba0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0a0812;
+  color: #f5efe6;
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1a0a2e;
+}
+::-webkit-scrollbar-thumb {
+  background: #3d1a6e;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7c3aed;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(26, 10, 46, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(61, 26, 110, 0.3);
+}
+
+.glass-light {
+  background: rgba(26, 10, 46, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(61, 26, 110, 0.2);
+}
+
+/* Poem content styling */
+.poem-content {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 2;
+  white-space: pre-wrap;
+  color: #f5efe6;
+  letter-spacing: 0.01em;
+}
+
+/* Gold text gradient */
+.gold-text {
+  background: linear-gradient(135deg, #d4a017, #f0c040, #d4a017);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated underline on links */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #d4a017, #f0c040);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Waveform bars */
+@keyframes waveBar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+.wave-bar {
+  animation: waveBar 0.8s ease-in-out infinite;
+  transform-origin: bottom;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(212, 160, 23, 0.3);
+  color: #f5efe6;
+}
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(61, 26, 110, 0.3) 25%,
+    rgba(61, 26, 110, 0.5) 50%,
+    rgba(61, 26, 110, 0.3) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
 }
 
 @layer utilities {
