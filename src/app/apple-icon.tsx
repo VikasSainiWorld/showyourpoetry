@@ -11,37 +11,47 @@ export default function AppleIcon() {
           width: 180,
           height: 180,
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           background: "linear-gradient(135deg, #0a0812 0%, #1a0a2e 100%)",
           borderRadius: 36,
         }}
       >
-        {/* Star symbol */}
+        {/* Outer ring */}
         <div
           style={{
-            fontSize: 80,
-            color: "#d4a017",
-            lineHeight: 1,
-            marginBottom: 4,
+            position: "absolute",
+            width: 130,
+            height: 130,
+            borderRadius: "50%",
+            border: "1.5px solid rgba(212,160,23,0.3)",
             display: "flex",
           }}
+        />
+        {/* 4-pointed star */}
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 100 100"
+          style={{ position: "absolute" }}
         >
-          ✦
-        </div>
-        {/* App name text */}
+          <polygon
+            points="50,5 58,42 95,50 58,58 50,95 42,58 5,50 42,42"
+            fill="#d4a017"
+            opacity="0.9"
+          />
+        </svg>
+        {/* Center dot */}
         <div
           style={{
-            fontSize: 16,
-            fontWeight: 700,
-            color: "#f5efe6",
-            letterSpacing: 1,
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            background: "#0a0812",
+            position: "absolute",
             display: "flex",
           }}
-        >
-          POETRY
-        </div>
+        />
       </div>
     ),
     { ...size }
