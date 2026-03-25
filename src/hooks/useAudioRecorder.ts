@@ -102,7 +102,12 @@ export function useAudioRecorder({
             throw new Error(data.error ?? "Transcription failed");
           }
 
-          onFinalTranscript?.(data.text ?? "");
+          const formatted = (data.text ?? "")
+            .split(",")
+            .map((s: string) => s.trim())
+            .filter(Boolean)
+            .join("\n");
+          onFinalTranscript?.(formatted);
         } catch (err: unknown) {
           onError?.(err instanceof Error ? err.message : "Transcription failed");
         } finally {
