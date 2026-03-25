@@ -103,7 +103,7 @@ export function useAudioRecorder({
           }
 
           const formatted = (data.text ?? "")
-            .split(",")
+            .split(/[,?।]/)
             .map((s: string) => s.trim())
             .filter(Boolean)
             .join("\n");
