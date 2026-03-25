@@ -77,7 +77,13 @@ export function useAudioRecorder({
         body: JSON.stringify({ language }),
       });
 
-      if (!res.ok) throw new Error("Failed to get transcription token");
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+          throw new Error("Please sign in to use voice recording.");
+        }
+        throw new Error(body.error ?? "Failed to get transcription token");
+      }
       const { token } = await res.json();
 
       setStatus("recording");
