@@ -10,14 +10,12 @@ interface AudioRecorderProps {
 }
 
 export default function AudioRecorder({ language, onTranscriptFinal }: AudioRecorderProps) {
-  const [partialText, setPartialText] = useState("");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const { status, audioLevel, startRecording, stopRecording } = useAudioRecorder({
     language,
-    onPartialTranscript: setPartialText,
     onFinalTranscript: (text) => {
-      setPartialText("");
+      setErrorMsg(null);
       onTranscriptFinal(text);
     },
     onError: (msg) => setErrorMsg(msg),
@@ -25,6 +23,8 @@ export default function AudioRecorder({ language, onTranscriptFinal }: AudioReco
 
   const isRecording = status === "recording";
   const isRequesting = status === "requesting";
+  const isProcessing = status === "processing";
+  const isBusy = isRequesting || isProcessing;
 
   return (
     <div className="glass rounded-2xl p-6 border border-royal-purple/20">
@@ -34,20 +34,23 @@ export default function AudioRecorder({ language, onTranscriptFinal }: AudioReco
           {status === "idle" && "Ready to record"}
           {status === "requesting" && "Requesting microphone…"}
           {status === "recording" && "Listening…"}
+          {status === "processing" && "Transcribing…"}
           {status === "error" && "Error"}
         </p>
 
         {/* Mic button */}
         <button
           onClick={isRecording ? stopRecording : startRecording}
-          disabled={isRequesting}
+          disabled={isBusy}
           className={cn(
             "relative w-20 h-20 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer",
             "focus:outline-none focus:ring-2 focus:ring-gold/50",
             isRecording
               ? "bg-red-800/80 border-2 border-red-500 shadow-[0_0_30px_rgba(220,38,38,0.4)]"
+              : isProcessing
+              ? "bg-gold/10 border-2 border-gold/40"
               : "bg-violet/20 hover:bg-violet/30 border-2 border-violet/50 hover:border-violet shadow-glow-violet",
-            isRequesting && "opacity-50 cursor-not-allowed"
+            isBusy && "opacity-50 cursor-not-allowed"
           )}
           aria-label={isRecording ? "Stop recording" : "Start recording"}
         >
@@ -59,10 +62,19 @@ export default function AudioRecorder({ language, onTranscriptFinal }: AudioReco
             </>
           )}
 
+          {/* Spinner when processing */}
+          {isProcessing && (
+            <span className="absolute inset-0 rounded-full border-2 border-gold/30 border-t-gold animate-spin" />
+          )}
+
           {/* Icon */}
           {isRecording ? (
             <svg className="w-7 h-7 text-red-300" fill="currentColor" viewBox="0 0 24 24">
               <rect x="6" y="6" width="12" height="12" rx="2" />
+            </svg>
+          ) : isProcessing ? (
+            <svg className="w-6 h-6 text-gold/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
             </svg>
           ) : (
             <svg className="w-7 h-7 text-violet-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -71,7 +83,7 @@ export default function AudioRecorder({ language, onTranscriptFinal }: AudioReco
           )}
         </button>
 
-        {/* Waveform */}
+        {/* Waveform during recording */}
         {isRecording && (
           <div className="flex items-end justify-center gap-1 h-8">
             {Array.from({ length: 12 }).map((_, i) => {
@@ -96,17 +108,12 @@ export default function AudioRecorder({ language, onTranscriptFinal }: AudioReco
           </div>
         )}
 
-        {/* Live partial transcript */}
-        {isRecording && partialText && (
-          <p className="text-sm text-muted italic text-center max-w-sm animate-pulse-glow">
-            &ldquo;{partialText}&rdquo;
-          </p>
-        )}
-
         {/* Helper text */}
         <p className="text-xs text-muted/60 text-center max-w-xs">
           {isRecording
             ? "Speak clearly · Click stop when done"
+            : isProcessing
+            ? "Sending to AssemblyAI — this takes a few seconds…"
             : "Click the microphone to start speaking your poem"}
         </p>
 

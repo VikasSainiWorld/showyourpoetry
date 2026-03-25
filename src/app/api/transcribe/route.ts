@@ -1,9 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { assemblyClient } from "@/lib/assemblyai";
 
-export async function POST() {
-  // Verify user is authenticated
+// Allow up to 60 s on Vercel (covers ~2 min of audio transcription)
+export const maxDuration = 60;
+
+export async function POST(request: NextRequest) {
   const supabase = createClient();
   const {
     data: { user },
@@ -21,16 +23,33 @@ export async function POST() {
   }
 
   try {
-    const token = await assemblyClient.realtime.createTemporaryToken({
-      expires_in: 480, // 8 minutes
+    const formData = await request.formData();
+    const audioFile = formData.get("audio") as File | null;
+
+    if (!audioFile) {
+      return NextResponse.json({ error: "No audio file provided" }, { status: 400 });
+    }
+
+    const buffer = Buffer.from(await audioFile.arrayBuffer());
+
+    const transcript = await assemblyClient.transcripts.transcribe({
+      audio: buffer,
+      language_detection: true, // auto-detect language — supports Hindi, Spanish, Arabic, etc.
     });
 
-    return NextResponse.json({ token });
+    if (transcript.status === "error") {
+      return NextResponse.json(
+        { error: transcript.error ?? "Transcription failed" },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ text: transcript.text ?? "" });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error("AssemblyAI token error:", message);
+    console.error("AssemblyAI transcription error:", message);
     return NextResponse.json(
-      { error: `AssemblyAI error: ${message}` },
+      { error: `Transcription failed: ${message}` },
       { status: 500 }
     );
   }
