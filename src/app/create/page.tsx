@@ -23,6 +23,7 @@ export default function CreatePage() {
   const handleSave = async (formData: PoemFormData) => {
     const poem = await createPoem(formData);
     if (poem) {
+      router.refresh();
       router.push(`/dashboard`);
     }
   };
