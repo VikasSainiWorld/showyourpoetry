@@ -15,7 +15,12 @@
       "Bash(npm install:*)",
       "Bash(find /c/Users/VIkasS/showyourpoetry -type f -name manifest.json -o -name *service*worker* -o -name *sw.js)",
       "Bash(grep -E \"\\\\.\\(json|mjs|ts|js\\)$\")",
-      "Bash(find /c/Users/VIkasS/showyourpoetry/src -type f -name *.tsx -o -name *.ts -o -name *.json)"
+      "Bash(find /c/Users/VIkasS/showyourpoetry/src -type f -name *.tsx -o -name *.ts -o -name *.json)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(npm run:*)",
+      "Bash(git rm:*)"
     ]
   }
 }

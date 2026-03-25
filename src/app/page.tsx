@@ -63,10 +63,7 @@ export default function LandingPage() {
         <ParticleBackground />
 
         <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto animate-fade-in">
-          <div className="mb-6 inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-xs text-muted border border-royal-purple/30">
-            <span className="text-gold">✦</span>
-            <span>Powered by AssemblyAI · Speak in any language</span>
-          </div>
+     
 
           <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-6">
             Where Poetry
