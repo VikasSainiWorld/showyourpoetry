@@ -1,6 +1,6 @@
 import Badge from "@/components/ui/Badge";
 import ShareButton from "@/components/poems/ShareButton";
-import { formatDate, getLanguageLabel } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import type { Poem, Profile } from "@/types";
 
 interface PoemViewerProps {
@@ -37,14 +37,15 @@ export default function PoemViewer({ poem, author, shareUrl }: PoemViewerProps) 
       <div className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 py-16">
         <div className="w-full max-w-2xl">
           {/* Meta */}
-          <div className="flex items-center gap-3 mb-8 flex-wrap">
-            <Badge variant="gold">{getLanguageLabel(poem.language)}</Badge>
-            {poem.tags.map((tag) => (
-              <Badge key={tag} variant="muted">
-                {tag}
-              </Badge>
-            ))}
-          </div>
+          {poem.tags.length > 0 && (
+            <div className="flex items-center gap-3 mb-8 flex-wrap">
+              {poem.tags.map((tag) => (
+                <Badge key={tag} variant="muted">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          )}
 
           {/* Title */}
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold gold-text mb-2 leading-tight">
