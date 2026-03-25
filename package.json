@@ -13,6 +13,7 @@
     "@supabase/supabase-js": "^2.99.3",
     "assemblyai": "^4.28.0",
     "clsx": "^2.1.1",
+    "html2canvas": "^1.4.1",
     "nanoid": "^5.1.7",
     "next": "14.2.35",
     "react": "^18",

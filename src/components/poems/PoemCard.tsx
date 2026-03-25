@@ -1,11 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import { formatDateShort, getLanguageLabel, truncate } from "@/lib/utils";
 import type { Poem } from "@/types";
+
+const ShareImageDialog = dynamic(
+  () => import("@/components/poems/ShareImageDialog"),
+  { ssr: false }
+);
 
 interface PoemCardProps {
   poem: Poem;
@@ -16,6 +22,7 @@ interface PoemCardProps {
 export default function PoemCard({ poem, onDelete, onTogglePublic }: PoemCardProps) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [toggling, setToggling] = useState(false);
+  const [showShareImage, setShowShareImage] = useState(false);
 
   const handleToggle = async () => {
     setToggling(true);
@@ -26,6 +33,7 @@ export default function PoemCard({ poem, onDelete, onTogglePublic }: PoemCardPro
   const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/poem/${poem.slug}`;
 
   return (
+    <>
     <div className="glass rounded-2xl p-5 border border-royal-purple/20 hover:border-gold/20 transition-all duration-300 group flex flex-col gap-4">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
@@ -76,6 +84,15 @@ export default function PoemCard({ poem, onDelete, onTogglePublic }: PoemCardPro
           </Button>
         )}
 
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowShareImage(true)}
+          title="Create shareable image"
+        >
+          🖼 Share Image
+        </Button>
+
         <div className="ml-auto">
           {confirmDelete ? (
             <div className="flex items-center gap-2">
@@ -108,5 +125,10 @@ export default function PoemCard({ poem, onDelete, onTogglePublic }: PoemCardPro
         </div>
       </div>
     </div>
+
+    {showShareImage && (
+      <ShareImageDialog poem={poem} onClose={() => setShowShareImage(false)} />
+    )}
+    </>
   );
 }
