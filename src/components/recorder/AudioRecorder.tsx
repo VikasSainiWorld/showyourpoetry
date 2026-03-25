@@ -113,7 +113,7 @@ export default function AudioRecorder({ language, onTranscriptFinal }: AudioReco
           {isRecording
             ? "Speak clearly · Click stop when done"
             : isProcessing
-            ? "Sending to AssemblyAI — this takes a few seconds…"
+            ? "It may take a few seconds…"
             : "Click the microphone to start speaking your poem"}
         </p>
 
