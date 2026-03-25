@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Button from "@/components/ui/Button";
-import { LANGUAGE_OPTIONS } from "@/lib/utils";
 import type { PoemFormData } from "@/types";
 
 interface PoemEditorProps {
@@ -81,22 +80,6 @@ export default function PoemEditor({
 
       {/* Metadata row */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-        {/* Language */}
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs text-muted uppercase tracking-wider">Language</label>
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="glass text-parchment text-sm px-3 py-2 rounded-lg border border-royal-purple/30 focus:border-gold/50 outline-none bg-deep-purple/60 cursor-pointer"
-          >
-            {LANGUAGE_OPTIONS.map((opt) => (
-              <option key={opt.code} value={opt.code} className="bg-deep-purple">
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
         {/* Tags */}
         <div className="flex-1 flex flex-col gap-1.5">
           <label className="text-xs text-muted uppercase tracking-wider">

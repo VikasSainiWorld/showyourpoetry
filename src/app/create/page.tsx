@@ -16,7 +16,6 @@ const AudioRecorder = dynamic(
 
 export default function CreatePage() {
   const [pendingTranscript, setPendingTranscript] = useState("");
-  const [language, setLanguage] = useState("en");
   const { createPoem, loading } = usePoems();
   const router = useRouter();
 
@@ -48,7 +47,6 @@ export default function CreatePage() {
             Voice Recording
           </p>
           <AudioRecorder
-            language={language}
             onTranscriptFinal={(text) => setPendingTranscript(text)}
           />
         </div>
