@@ -12,7 +12,7 @@ export default function LoginPage() {
         <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gold/6 rounded-full blur-3xl" />
       </div>
       <div className="relative w-full max-w-md">
-        <AuthForm mode="login" />
+        <AuthForm />
       </div>
     </div>
   );
