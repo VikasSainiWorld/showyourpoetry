@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,6 +29,11 @@ export const metadata: Metadata = {
     "Speak your poetry in any language and share it with the world. Record, transcribe, and publish your poems with AI-powered voice technology.",
   keywords: ["poetry", "voice recording", "multilingual", "poems", "creative writing"],
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -50,6 +56,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="font-sans antialiased bg-midnight text-parchment min-h-screen">
         {children}
+        <PWAInstallPrompt />
       </body>
     </html>
   );
