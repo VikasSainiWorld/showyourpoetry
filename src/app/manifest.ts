@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "ShowYourPoetry",
     description:
       "Speak your poetry in any language and share it with the world. Record, transcribe, and publish your poems with AI-powered voice technology.",
-    start_url: "/",
+    start_url: "/dashboard",
     display: "standalone",
     background_color: "#0a0812",
     theme_color: "#d4a017",
