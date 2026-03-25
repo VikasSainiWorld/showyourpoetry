@@ -23,6 +23,13 @@ export default function PoemCard({ poem, onDelete, onTogglePublic }: PoemCardPro
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [toggling, setToggling] = useState(false);
   const [showShareImage, setShowShareImage] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(shareUrl);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
 
   const handleToggle = async () => {
     setToggling(true);
@@ -76,10 +83,10 @@ export default function PoemCard({ poem, onDelete, onTogglePublic }: PoemCardPro
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigator.clipboard.writeText(shareUrl)}
+            onClick={handleCopyLink}
             title="Copy share link"
           >
-            🔗 Share
+            {linkCopied ? "✓ Link Copied!" : "🔗 Share"}
           </Button>
         )}
 
