@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
-import { formatDateShort, getLanguageLabel, truncate } from "@/lib/utils";
+import { formatDateShort, truncate } from "@/lib/utils";
 import type { Poem } from "@/types";
 
 const ShareImageDialog = dynamic(
@@ -52,7 +52,6 @@ export default function PoemCard({ poem, onDelete, onTogglePublic }: PoemCardPro
       </div>
 
       <div className="flex items-center gap-2 flex-wrap">
-        <Badge variant="violet">{getLanguageLabel(poem.language)}</Badge>
         {poem.tags.slice(0, 3).map((tag) => (
           <Badge key={tag} variant="muted">{tag}</Badge>
         ))}
