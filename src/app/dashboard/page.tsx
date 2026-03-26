@@ -4,7 +4,6 @@ import { createClient } from "@/lib/supabase/server";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import DashboardClient from "./DashboardClient";
-import type { Poem } from "@/types";
 
 export const metadata = { title: "My Poems — ShowYourPoetry" };
 
@@ -26,6 +25,13 @@ export default async function DashboardPage() {
     .eq("id", user.id)
     .single();
 
+  const firstName =
+    user.user_metadata?.given_name ??
+    user.user_metadata?.full_name?.split(" ")[0] ??
+    user.user_metadata?.name?.split(" ")[0] ??
+    profile?.username ??
+    "poet";
+
   return (
     <div className="min-h-screen bg-midnight">
       <Navbar />
@@ -37,7 +43,7 @@ export default async function DashboardPage() {
               My Poems
             </h1>
             <p className="text-muted mt-1">
-              Welcome back, {profile?.username ?? "poet"}
+              Welcome back, {firstName}
             </p>
           </div>
           <Link href="/create">
@@ -45,26 +51,6 @@ export default async function DashboardPage() {
               <span>✦</span> New Poem
             </button>
           </Link>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-10">
-          <div className="glass rounded-xl p-4 text-center">
-            <p className="font-serif text-3xl font-bold gold-text">{poems?.length ?? 0}</p>
-            <p className="text-xs text-muted mt-1">Total Poems</p>
-          </div>
-          <div className="glass rounded-xl p-4 text-center">
-            <p className="font-serif text-3xl font-bold gold-text">
-              {poems?.filter((p: Poem) => p.is_public).length ?? 0}
-            </p>
-            <p className="text-xs text-muted mt-1">Published</p>
-          </div>
-          <div className="glass rounded-xl p-4 text-center col-span-2 sm:col-span-1">
-            <p className="font-serif text-3xl font-bold gold-text">
-              {new Set(poems?.map((p: Poem) => p.language)).size ?? 0}
-            </p>
-            <p className="text-xs text-muted mt-1">Languages</p>
-          </div>
         </div>
 
         <DashboardClient initialPoems={poems ?? []} />
